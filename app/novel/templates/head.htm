@@ -1,0 +1,38 @@
+<script type="text/javascript">
+function returnToHomepage(){
+	var urlOriginal=window.document.location.href;
+	var paramsDivideIndex=urlOriginal.indexOf('?');
+	var url=urlOriginal.substr(0,paramsDivideIndex);
+	window.location.href=url;
+}
+function gotoSomewhere(uri){
+	var urlOriginal=window.document.location.href;
+	var uriDivideIndex=urlOriginal.lastIndexOf('/');
+	var url=urlOriginal.substr(0,uriDivideIndex);
+	window.location.href=url+'/'+uri;
+}
+</script>
+<!-- nav -->
+<nav class="navbar navbar-default navbar-fixed-top" style="">
+<div class="container">
+	<div class="navbar-header">
+		<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#mainNav" aria-expanded="false">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+		</button>
+		<a class="navbar-brand" href="#">CLANNAD -クラナド-</a>
+	</div>
+	<div class="navbar-collapse collapse" id="mainNav" aria-expanded="false" style="height: 1px;">
+		<ul class="nav navbar-nav">
+			<li id="navNovel">
+				<a  href="/novel/index">Novel</a>
+			</li>
+			<li>
+				<a href="/">more</a>
+			</li>
+		</ul>
+	</div>
+</div>
+</nav>
+<!-- nav end -->

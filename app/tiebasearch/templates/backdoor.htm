@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>BD</title>
+	<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+</head>
+<body>
+	<div id="content">
+		
+	</div>
+</body>
+<script type="text/javascript">
+	window.onload = function(){
+		data = {{data|tojson}}
+		j_data = JSON.parse(data)
+		content = $('#content')
+		j_data.forEach(function(item){
+			content.html(content.html() + item + '<br>')
+		})
+	}
+</script>
+</html>

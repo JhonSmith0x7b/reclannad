@@ -1,0 +1,152 @@
+<html>
+    <head>
+        {% block head %}
+            <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js" integrity="sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh" crossorigin="anonymous"></script>
+            <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js" integrity="sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ" crossorigin="anonymous"></script>
+        {% endblock %}
+    </head>
+    <body>
+        {% block content %}
+            <div class="container-fluid">
+                <img style="width:100%;" src="{{url_for('static', filename='images/article/top.png')}}">
+            </div>
+            <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                <a class="navbar-brand">Re;Clannad</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#article_nav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+        
+                <div class="collapse navbar-collapse" id="article_nav">
+                    {% set islogin=check_login() %}
+                    <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/article/list/">article</a> 
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/novel/index/">novel</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link active" href="/tiebasearch/">tiebasearch</a>
+                        </li>
+                        {% if not islogin %}
+                        <li class="nav-item" data-toggle="modal" data-target="#login_modal">
+                            <a class="nav-link active">login</a>
+                        </li>
+                        {% else %}
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle active" href="#" id="article_dropdown_link" data-toggle="dropdown">
+                                    admin 
+                            </a>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="/article/posted/">posted</a>
+                                <b id="nav_bar_logout_button" class="dropdown-item">logout</b>
+                                <script>
+                                    logout_button = $('#nav_bar_logout_button')
+                                    logout_button.on('click', function(){
+                                        $.ajax({
+                                            url: "/main/user/logout/",
+                                            type: 'post',
+                                            success: function(data){
+                                                console.log(data)
+                                                window.location.href = window.location.href
+                                            },
+                                            error: function(error){
+                                                console.log(error)
+                                            }
+                                        })
+                                    })
+                                </script>
+                            </div>
+                        </li>
+                        {% endif %}
+                    </ul>
+                    <form class="form-inline my-2 my-lg-0">
+                        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                    </form>
+                </div>
+            </nav>
+
+            <div class="modal fade" id="login_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">login</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                        <div class="form-group">
+                            <label>&nbsp;&nbsp;&nbsp;&nbsp;Email&nbsp;&nbsp;&nbsp;:</label>
+                            <input id="base_login_email" type="email">
+                        </div>
+                        <div class="form-group">
+                            <label>Password:</label>
+                            <input id="base_login_pwd" type="password">
+                        </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button id="base_login_btn" type="button" class="btn btn-primary">Login</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                $('#base_login_btn').on('click', function(){
+                    email = $('#base_login_email').val()
+                    password = $('#base_login_pwd').val()
+                    $.ajax({
+                        url: '/main/user/login/',
+                        type: 'post',
+                        data: {
+                            'username': email,
+                            'pwd': password
+                        },
+                        dataType: 'json',
+                        success: function(data){
+                            $('#login_modal').modal('hide')
+                            if(data.success){
+                                window.location.reload()
+                            }else{
+                                alert(data.msg)
+                            }
+                        },
+                        error: function(e){
+                            console.log(e)
+                        }
+                    })
+                })
+            </script>
+        {% endblock %}
+        {% block foot %}
+            <div class="container">
+                <hr>
+                <div class="row" style="text-align:center;">
+                    <div class="col-sm-12 col-md-9">
+                        Jhon Smith
+                    </div>
+                    <div class="col-sm-12 col-md-3 pull-right">
+                        <img id="suzumiya_weekday_img" style="width:96px;" src="{{ url_for('static', filename='images/main/1.jpg') }}"/>
+                        <script>
+                            suzu = $('#suzumiya_weekday_img')
+                            img_path = suzu.attr('src') 
+                            date = new Date()
+                            weekday = date.getDay()
+                            img_path = img_path.substr(0, img_path.lastIndexOf('/')) + '/' + weekday + '.jpg'
+                            suzu.attr('src', img_path)
+                        </script>
+                    </div>
+                </div>
+            </div>
+        {% endblock %}
+    </body>
+    {% block scripts %}
+    
+    {% endblock %}
+</html>

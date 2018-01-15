@@ -1,0 +1,115 @@
+{% extends "main/base.htm" %}
+
+{% block head %}
+    {{ super() }}
+    <title>article - {{ article.title|safe }}</title>
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+    <div class="container article">
+        <div class="article_title">
+            <h3>{{ article.title|safe }}</h3>
+        </div>
+        <div class="article_author">
+            <span> {{ article.author|safe }} <span>
+        </div>
+        <div class="article_summary">
+            <h5>Summary:</h5>
+            <p>{{ article.c|safe }}</p>
+        </div>
+        <div class="article_content">
+            {{ article.content|safe }}
+        </div>
+        <div class="btn-group">
+            <button id="top_btn" class="btn btn-link">TOP</button>
+            {% if check_login() %}
+            <button id= "edit_btn"class="btn btn-warning">&nbsp;&nbsp;&nbsp;edit&nbsp;&nbsp;&nbsp;</button>
+            <button data-toggle="modal"  data-target="#delete_modal" class="btn btn-danger">delete</button>
+            {% endif %}
+        </div>
+                <!-- Modal -->
+        <div class="modal fade" id="delete_modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="delete_modal_label">notice</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    Are your sure delete this article {{ article.title }} @.@?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button"  id="delete_btn" class="btn btn-primary">Delete! Any Ways</button>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display:none;">
+        <input id="article_id" value="{{ article.id }}">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    <script>
+        window.onload = function(){
+            top_btn = $('#top_btn')
+            edit_btn = $('#edit_btn')
+            delete_btn = $('#delete_btn')
+            top_btn.on('click', function(){
+              window.scrollTo(0, 0)  
+            })
+            delete_btn.on('click', function(){
+                aid = $('#article_id').val()
+                $.ajax({
+                    url: '/article/' + aid + '/del/',
+                    type: 'post',
+                    success: function(data){
+                        console.log(data)
+                        $('#delete_modal').modal('hide')
+                        window.location.href = '/article/list/'
+                    },
+                    error: function(e){
+                        console.log(e)
+                    }
+                })
+            })
+            edit_btn.on('click', function(){
+                aid = $('#article_id').val()
+                window.location.href='/article/' + aid + '/edit/'
+            })
+        }
+    </script>
+    <style>
+    .article{
+        text-align: center;
+        margin-top: 24px;
+    }
+    .article_title{
+
+    }
+    .article_author{
+        
+    }
+    .article_summary{
+        text-align: left;
+        margin-top: 12px;
+        margin-bottom: 12px;
+    }
+    .article_summary h5{
+    }
+    .article_summary p{
+
+    }
+    .article_content{
+        text-align: left;
+        border-top: 1px black solid;
+        padding-top: 24px;
+    }
+    </style>
+{% endblock %}

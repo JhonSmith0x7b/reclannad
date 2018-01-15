@@ -1,0 +1,142 @@
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta property="og:image" content="http://cdn-deeplink.haloapps.com/upload/20170122/148507742396702.jpg"/>
+<title>ClannadBar--官方小说--开发中的同好会</title>
+<link href="{{ url_for('novel.static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+<link href="{{ url_for('novel.static', filename='css/mycss.css') }}" rel="stylesheet">
+<link href="{{ url_for('novel.static', filename='css/bootstrap-select.css') }}" rel="stylesheet">
+<script src="{{ url_for('novel.static', filename='js/jquery-2.1.4.min.js') }}"></script>
+<script src="{{ url_for('novel.static', filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('novel.static', filename='js/bootstrap-select.js') }}"></script>
+<script type="text/javascript">
+window.onload = function(){
+	$('#novelCollapseGe1mu').collapse();
+	$('#navNovel').addClass('active');
+}
+</script>
+</head>
+<body>
+<div id="top"></div>
+{% include 'head.htm' %}
+<div style="margin-top:180px"></div>
+<div class="title well" style="background:url({{ url_for('novel.static', filename='images/bg.jpg') }});"></div>
+<!-- head area   END-->
+{% if action == 'readnovel' %}
+	{% include 'content.htm' %}
+{% endif%}
+<!-- novel list -->
+<div class="container">
+<div class="row">
+<div class="col-xs-12">
+<div class="panel-group" id="novelTheme"><!-- 被光守护的坡道上 -->
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse"
+	data-parent="novelTheme" href="#novelCollapseShikari"
+	aria-expanded="false" class="collapsed"> 被光守护的坡道上 </a></h4>
+</div>
+<div id="novelCollapseShikari" class="panel-collapse collapse novelCollapse"
+	aria-expanded="false" style="height: 0px;">
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarinachu">拿出勇气吧</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarilianyi">连衣裙</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarinanxing">男性朋友们</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarinage">那个时候的我</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarigongzi">公子的日记</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarixintiao">心跳加速的瞬间</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikaritebie">特别的夜晚</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikariwode">我的哥哥</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarigeshi">各式各样的味道</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarizhouyu">咒语的秘密</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarierren">二人的回忆</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarilaoshi">老师的回忆</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikaritade"
+	onclick="">她的境界线</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikarisinian">四年前的因缘</a></div>
+<div class="col-xs-4"><a
+	href="?action=readnovel&chapter=shikarishengping">胜平的过去</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikariguhe">古河面包师再结成</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=shikaridajia">大家在澡堂</a></div>
+</div>
+</div>
+</div>
+<!-- 被光守护的坡道上 END -->
+<div class="panel panel-default">
+<div class="panel-heading"
+	style="">
+<h4 class="panel-title"><a data-toggle="collapse"
+	data-parent="novelTheme" href="#novelCollapseGe1mu" aria-expanded="false"
+	class="collapsed"> 游戏文本 </a></h4>
+</div>
+<div id="novelCollapseGe1mu" class="panel-collapse collapse novelCollapse"
+	aria-expanded="false" style="height: 0px;">
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1munagisa">古河渚</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1muafterstory1">AfterStory1周目</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1muafterstory2">AfterStory</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1mukotomi">一之濑琴美</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1mutomoyo">坂上智代</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1mufuuko">伊吹风子</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1muryo">藤林椋</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1mukyo">藤林杏</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1muyukine">宫泽有纪宁</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1mumisae">相乐美佐枝</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1musunohara">春园兄妹</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=ge1mukappei">柊胜平</a></div>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<h4 class="panel-title"><a data-toggle="collapse"
+	data-parent="novelTheme" href="#novelCollapseTwo" aria-expanded="false"
+	class="collapsed"> Another Stroy</a></h4>
+</div>
+<div id="novelCollapseTwo" class="panel-collapse collapse novelCollapse"
+	aria-expanded="false" style="height: 0px;">
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=monogataritomoyoafter">智代After</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=monogatarifuuko1">风子小宇宙</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=monogatarifuuko2">希望的宇宙</a></div>
+</div>
+<div class="row">
+<div class="col-xs-4"><a href="?action=readnovel&chapter=monogatarikotomi">尾巴王国的小琴美</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=narcissus">Narcissus</a></div>
+<div class="col-xs-4"><a href="?action=readnovel&chapter=repal">仙剑奇侠传四</a></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<br>
+<br>
+<br>
+{% include 'feet.htm' %}
+<!-- novel list end -->
+
+</div>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,2 @@
+nginx + flask + gunicorn
+gunicorn --workers=4 -b :5001  manage:app

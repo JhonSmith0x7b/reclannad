@@ -1,0 +1,33 @@
+#novelContent{
+	background:#F8F8FF;
+	font-family: 微软雅黑;
+	border: 3px solid #ADD8E6;
+	padding:10px;
+	word-wrap: break-word;
+}
+body{
+	font-family: 微软雅黑;
+//	background:url(../image/3.jpg);
+	word-wrap: break-word;
+}
+.novelCollapse .row{
+	margin-top:10px;
+	margin-left:1px;
+}
+
+.title{
+	background:url(../image/bg.jpg);
+	width:100%;
+	height:250px;
+	position:absolute;
+	margin-top:-140px;
+}
+#foot{
+	width:100%;
+	height:20%;
+	border-top: 1px solid #ddd;
+}
+#footContent{
+	margin-top:15px;
+	text-align:center;
+}

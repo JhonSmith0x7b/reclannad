@@ -1,0 +1,111 @@
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>clannad bar history search</title>
+	<script type = "text/javascript" src = "{{ url_for('tiebasearch.static', filename='js/jquery-2.1.4.min.js') }}"></script>
+	<style type="text/css">
+		#content_table
+		{
+			width:100%;
+		}
+		.interval
+		{
+			background:#D8D8D8
+		}
+		#submit_button
+		{
+			width:100px;
+			height:36px;
+			font-size:20px;
+		}
+	</style>
+</head>
+<body>
+	<h1>ClannadBar Search</h3>
+	<div id = "myform">
+		Bar ID : <input id = 'author' type = "text" value = "bar id"/>
+		<br/>
+		<br/>
+		Date :
+		<label><input  name = "date" type = "radio" value = "all" checked="false" />all</label>
+		<label><input  name = "date" type = "radio" value = "2006"/>2006</label>
+		<label><input  name = "date" type = "radio" value = "2007"/>2007</label>
+		<label><input  name = "date" type = "radio" value = "2008"/>2008</label>
+		<label><input  name = "date" type = "radio" value = "2009"/>2009</label>
+		<label><input  name = "date" type = "radio" value = "2010"/>2010</label>
+		<label><input  name = "date" type = "radio" value = "2011"/>2011</label>
+		<label><input  name = "date" type = "radio" value = "2012"/>2012</label>
+		<label><input  name = "date" type = "radio" value = "2013" checked="true"/>2013</label>
+		<label><input  name = "date" type = "radio" value = "2014"/>2014</label>
+		<label><input  name = "date" type = "radio" value = "2015"/>2015</label>
+		<label><input  name = "date" type = "radio" value = "2016"/>2016</label>
+		<br/>
+		<br/>
+		<input id = "submit_button" type = "button" value = "submit" onclick = "query()"/>
+		<br/>
+		<br/>
+	</div>
+	<div>
+		<span id= 'test'></span>
+	</div>
+	<div>
+		<table id = "content_table">
+		</table>
+	</div>
+</body>
+</html>
+<script type="text/javascript">
+	function query(){
+		$('#submit_button').attr('disabled', true).val('wait...');
+		var author = '主题作者: ' + $('#author').val();
+		var date = $('#myform input:radio:checked').val();
+		$.ajax({
+			'url':'/tiebasearch/query/',
+			'method':'post',
+			'dataType':'json',
+			'data':{
+				'author':author,
+				'date':date
+			},
+			'success':function(data){
+				$('#submit_button').attr('disabled', false).val('submit');
+				var result = eval(data);
+				if(result.length != 0)r($('#author').val());
+				content_table_conent = "<tr class = 'interval'><td>Comments</td><td>Title</td><td>author</td><td>date</td></tr>";
+				var is_interval = false;
+				for(var i in result){
+					if(is_interval){
+						content_table_conent += "<tr class = 'interval'><td>" + result[i][4] + "</td><td><a target = '_blank' href = 'http://tieba.baidu.com/"+ result[i][3] +"'>"+ result[i][5] + "</a></td><td>" + result[i][1] + "</td><td>" + result[i][2] + "</td></tr>";
+					} else {
+						content_table_conent += "<tr><td>" + result[i][4] + "</td><td><a target = '_blank' href = 'http://tieba.baidu.com/"+ result[i][3] +"'>"+ result[i][5] + "</a></td><td>" + result[i][1] + "</td><td>" + result[i][2] + "</td></tr>";
+					}
+					is_interval = !is_interval;
+				}
+				$('#content_table').html(content_table_conent);
+			},
+			'error':function(error){
+				$('#text').val("error, msg :" + error.statusText);
+				$('#submit_button').attr('disabled', false).val('submit');
+			}
+		});
+	}
+
+	function r(who){
+		if(who != ''){
+			$.ajax({
+				'url':'/tiebasearch/r/',
+				'method':'post',
+				'dataType':'json',
+				'data':{
+					'who':who
+				},
+				'success':function(data){
+
+				},
+				'error':function(error){
+
+				}
+			});
+		}
+	}
+</script>

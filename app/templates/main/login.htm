@@ -1,0 +1,71 @@
+{% extends "main/base.htm" %}
+
+{% block head %}
+    {{ super() }}
+    <title>login</title>
+{% endblock %}
+
+{% block content %}
+    <br>
+    username: <input id="username">
+    pwd: <input id="pwd">
+    <br>
+    <button id="signup_btn">signup</button>
+    <br>
+    <button id="login_btn">login</button>
+
+{% endblock %}
+
+{% block foot %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        window.onload = function(){
+            signup_btn = $('#signup_btn')
+            login_btn = $('#login_btn')
+            signup_btn.on('click', function(){
+                username_e = $('#username')
+                pwd_e = $('#pwd')
+                username = username_e.val()
+                pwd = pwd_e.val()
+                $.ajax({
+                    url: 'http://localhost:5000/main/user/signup/',
+                    type: 'post',
+                    data: {
+                        'username': username,
+                        'pwd': pwd
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        console.log(data)
+                    },
+                    error: function(e){
+                        console.log(e)
+                    }
+                })
+            })
+            login_btn.on('click', function(){
+                username_e = $('#username')
+                pwd_e = $('#pwd')
+                username = username_e.val()
+                pwd = pwd_e.val()
+                $.ajax({
+                    url: 'http://localhost:5000/main/user/login/',
+                    type: 'post',
+                    data: {
+                        'username': username,
+                        'pwd': pwd
+                    },
+                    dataType: 'json',
+                    success: function(data){
+                        console.log(data)
+                    },
+                    error: function(e){
+                        console.log(e)
+                    }
+                })
+            })
+        }
+    </script>
+{% endblock %}

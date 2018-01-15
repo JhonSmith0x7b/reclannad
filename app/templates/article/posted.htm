@@ -1,0 +1,135 @@
+{% extends 'main/base.htm' %}
+
+{% block head %}
+    {{ super() }}
+
+    <script src="/static/js/ckeditor/ckeditor.js"></script>
+    <title>article-posted</title>
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+    {% if article is not defined %}
+        {% set article={'title':'', 'author':'', 'c':'', 'content':'', 'id':''} %}
+    {% endif %} 
+    <div class="container">
+        <div id="editor_div">
+            <div id="editor_head">
+                <div id="editor_title">
+                    <aa>Title:</aa> <bb><input id="article_title" value="{{ article.title|safe }}"></bb>
+                </div>
+                <div id="editor_author">
+                    <aa>Author:</aa> <bb><input id="article_author" value="{{ article.author|safe }}"></bb>
+                </div>
+                <div id="editor_summary">
+                    <aa>Summary:</aa> <bb><input id="article_summary" value="{{ article.c|safe }}"></bb>
+                </div>
+            </div>
+            <div id="editor_content">
+                <textarea name="editor" id="editor" rows="10" cols="80">
+                    {% if article.content %}
+                    {{ article.content }}
+                    {% else %}
+                    Hello; 您好; こにちわ; ^.^
+                    {% endif %}
+                </textarea>
+            </div>
+            <div id="submit_div">
+                <button class="btn btn-success" id="submit_btn">submit</button>
+            </div>
+        </div>
+    </div>
+    <div style="display:none;">
+        <input id="article_id" value="{{ article.id }}">
+    </div>
+{% endblock %}
+
+{% block scripts %}
+    {{ super() }}
+    
+    <script>
+        window.onload = function(){
+            CKEDITOR.replace('editor', {
+                height: 360,
+                resize_enabled: false,
+                filebrowserImageUploadUrl: '/main/file/upload/?type=article'
+            })
+            //CKEDITOR.instances.editor.getData()  get editor value
+            $('#submit_btn').on('click', function(){
+                title = $('#article_title').val()
+                author = $('#article_author').val()
+                summary = $('#article_summary').val()
+                content = CKEDITOR.instances.editor.getData()
+                aid = $('#article_id').val()
+                article = {
+                    title: title,
+                    author: author,
+                    summary: summary,
+                    content: content,
+                    aid: aid
+                }
+                $.ajax({
+                    url: '/article/post/',
+                    dataType: 'json',
+                    type: 'post',
+                    data: article,
+                    success: function(data){
+                        if(data.aid){
+                            window.location.href = '/article/' + data.aid + '/get/'
+                        }
+                    },
+                    error: function(e){
+                        console.log(e)
+                    }                    
+                })
+            })
+        }
+    </script>
+    <style>
+        #editor_div{
+            background-color: #eeeeee;
+            height: 700px;
+            border-radius: 6px;
+            margin-top: 48px; 
+        }
+        #editor_head{
+            margin: 0px 24px 0px 24px;
+            padding-top: 24px;
+
+        }
+        #editor_title{
+
+        }
+        #editor_author{
+
+        }
+        #editor_summary{
+
+        }
+        #editor_content{
+            padding: 24px;
+        }
+        aa{
+            height: 24px;
+            float: left;
+            border-bottom: 1px #ffffff inset;
+            width: 360px;
+        }
+        bb{
+            
+        }
+        bb input{
+            width: 400px;
+            margin-top:6px;
+        }
+        #submit_div{
+            float: right;
+            margin-right: 24px;
+        }
+    </style>
+{% endblock %}
+
+{% block foot %}
+    {{ super() }}
+
+{% endblock %}

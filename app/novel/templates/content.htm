@@ -1,0 +1,91 @@
+<div class="container">
+<div class="row">
+<div class="col-xs-12">
+<div id="novelContent" class="novelContent well well-lg">
+
+</div>
+</div>
+</div>
+</div>
+<br>
+<br>
+<br>
+<!-- 模态窗弹出提示 -->
+<div id="nextModal" class="modal fade" style="margin-top:20%;">
+<div class="modal-dialog">
+<div class="modal-content">
+<div class="modal-header">
+<button type="button" class="close" data-dismiss="modal">&times;</button>
+<h4>再怎么看也没有了</h4>
+</div>
+<div class="modal-body">
+<p>您可以返回目录</p>
+</div>
+<div class="modal-footer">
+<a href="javascript:$('#nextModal').modal('hide');" class="btn">关闭</a>
+<a href="javascript:returnToHomepage();" class="btn btn-info">返回目录</a>
+</div>
+</div>
+</div>
+</div>
+<!-- 模态窗弹出提示END -->
+<div id="novelPage"
+	style="position: fixed; bottom: 1%; z-index: 9998; right: 20%; display: ;">
+<ul class="pagination">
+	<li><a href="javascript:prev();">&lt;&lt;</a></li>
+	<li><a id="currentIndex">1</a></li>
+	<li><a href="javascript:next();">&gt;&gt;</a></li>
+	<li>&nbsp;</li>
+	<li class="dropup"><select id = 'page_selector' class="selectpicker" data-style="btn-info"
+		data-width="80px" data-size="5" data-title="跳页"
+		onChange="changePageViaSelect()">
+
+	</select></li>
+</ul>
+</div>
+<!-- novel Content end -->
+
+
+
+<script type="text/javascript">
+function changePageViaSelect(){
+	var index =$('.selectpicker').val();
+	changePage(index-1);
+}
+function changePage(index){
+	$('#novelContent').html(novelContentArray[index]);
+	$('#currentIndex').html(index+1);
+	$('body,html').animate({scrollTop:0},100);
+	$('.selectpicker').val('');
+	$('.selectpicker').selectpicker('render');
+}
+function prev(){
+	var currentIndex=$('#currentIndex').html();
+	if(currentIndex==1){
+		return;
+		}
+	changePage(currentIndex-2);
+}
+function next(){
+	var currentIndex=$('#currentIndex').html();
+	if(currentIndex>novelContentArray.length-1){
+		$('#nextModal').modal('show');
+		return;
+		}
+	changePage(currentIndex-0);
+}
+function init_page(){
+	var content = {{content|tojson}}
+	var content_array = JSON.parse(content)
+	novelContentArray = content_array
+	var page_selector = $('#page_selector')
+	var selector_str = ''
+	for(i in novelContentArray){
+		selector_str += ('<option>' + (novelContentArray.length - i) + '</option>')
+	}
+	page_selector.html(selector_str)
+	changePage(0)
+}
+var novelContentArray = new Array()
+init_page()
+</script>
