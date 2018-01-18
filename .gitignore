@@ -3,3 +3,8 @@ config.py
 *.db
 .env
 .vscode
+*.sock
+*.pid
+__pycache__
+*.log
+*.csv

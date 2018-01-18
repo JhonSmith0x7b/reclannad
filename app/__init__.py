@@ -14,6 +14,8 @@ app.register_blueprint(novel)
 from .databases import init_db
 from .tiebasearch import tiebasearch
 app.register_blueprint(tiebasearch)
+from .catch_vungle import catch_vungle
+app.register_blueprint(catch_vungle)
 init_db(app)
-app.debug = True
+app.debug = True 
 app.secret_key = config['development'].APP_SECRET

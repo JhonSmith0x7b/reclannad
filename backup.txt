@@ -1,2 +1,7 @@
 nginx + flask + gunicorn
-gunicorn --workers=4 -b :5001  manage:app
+
+gunicorn --workers=4 -b :5001 -p test.pid manage:app 
+
+gunicorn --workers=2 -b unix:test.sock  --log-file /app/logs/gunicorn.log manage:app
+
+appsecret in multi process must be same
