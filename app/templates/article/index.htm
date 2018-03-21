@@ -15,7 +15,7 @@
                     {% for item in articles %}
                     <div class="card article">
                         <div class="card-body">
-                            <h4 class="card-title">{{ item.title|safe }}</h4>
+                            <a href="/article/{{ item.aid }}/get"><h4 class="card-title">{{ item.title|safe }}</h4></a>
                             <p class="card-text">{{ item.brief|safe }} .....</p>
                             <a href="/article/{{ item.aid }}/get" >Read More</a>
                         </div>
@@ -80,160 +80,162 @@
 {% block scripts %}
     {{ super() }}
     <script>
-        var is_first_call = true
-        function page_change(page_div_id, url, handler, current_page_num, to_page_num, max_page_num){
-            var previous_btn = $('#previous_page_btn')
-            var next_btn = $('#next_page_btn')
-            var page_div = $('#' + page_div_id)
-            var is_previous_abled = true
-            var is_next_abled = true
-            try{
-                current_page_num = parseInt(current_page_num)
-                to_page_num = parseInt(to_page_num)
-                max_page_num = parseInt(max_page_num)
-            }catch(err){
-                console.log('error: ' + err.toString())                
-            }
-            if(to_page_num < 1 || to_page_num > max_page_num){
-                console.log('stupid')
-                $('#page_modal').modal('show')
-                return
-            } 
-            if(to_page_num == 1){
-                is_previous_abled = false
-            }
-            if(to_page_num == max_page_num){
-                is_next_abled = false
-            }
-            var page_html_slice = ''
+        function Page(){
+            this.is_first_call = true
+            this.page_change = function page_change(page_div_id, handler, current_page_num, to_page_num, max_page_num){
+                var previous_btn = $('#previous_page_btn')
+                var next_btn = $('#next_page_btn')
+                var page_div = $('#' + page_div_id)
+                var is_previous_abled = true
+                var is_next_abled = true
+                try{
+                    current_page_num = parseInt(current_page_num)
+                    to_page_num = parseInt(to_page_num)
+                    max_page_num = parseInt(max_page_num)
+                }catch(err){
+                    console.log('error: ' + err.toString())                
+                }
+                if(!this.is_first_call && (to_page_num < 1 || to_page_num > max_page_num)){
+                    console.log('stupid')
+                    $('#page_modal').modal('show')
+                    return
+                } 
+                if(to_page_num == 1){
+                    is_previous_abled = false
+                }
+                if(to_page_num == max_page_num){
+                    is_next_abled = false
+                }
+                var page_html_slice = ''
 
-            if(max_page_num < 7){
-                for(var i = 0; i < max_page_num; i++){
-                    _i = i + 1
-                    page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
+                if(max_page_num < 7){
+                    for(var i = 0; i < max_page_num; i++){
+                        _i = i + 1
+                        page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
+                    }
+                }else if(max_page_num >=7){
+                    if(max_page_num - 6 > to_page_num && to_page_num > 6){
+                        for(var i = 0; i < 2; i++){
+                            _i = i + 1
+                            page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
+                        }
+                        page_html_slice += '<li class="page-item disabled"><span class="page-link" >' + '...' + '</span></li>'
+                        for(var i = 3; i > 0; i--){
+                            _i = to_page_num + 2 - i
+                            page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
+                        }
+                        page_html_slice += '<li class="page-item disabled"><span class="page-link" >' + '...' + '</span></li>'
+                        for(var i = 2; i > 0; i--){
+                            _i = max_page_num + 1 - i
+                            page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
+                        }
+                    }else if (to_page_num <= 6){
+                        for(var i = 0; i < 7; i++){
+                            _i = i + 1
+                            page_html_slice += '<li class="page-item" cc="'+ _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
+                        }
+                        page_html_slice += '<li class="page-item disabled"><span class="page-link">' + '...' + '</span></li>'
+                        for(var i = 2; i > 0; i--){
+                            _i = max_page_num + 1 - i
+                            page_html_slice += '<li class="page-item" cc="'+ _i +'"><a class="page-link" href="#">' + _i + '</a></li>'
+                        }
+                    }else if(to_page_num >= max_page_num - 6){
+                        for(var i = 0; i < 2; i++){
+                            _i = i + 1
+                            page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
+                        }
+                        page_html_slice += '<li class="page-item disabled"><span class="page-link">' + '...' + '</span></li>'
+                        for(var i = 8; i > 0; i--){
+                            _i = max_page_num - i + 1
+                            page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
+                        } 
+                    }
+                    
                 }
-            }else if(max_page_num >=7){
-                if(max_page_num - 6 > to_page_num && to_page_num > 6){
-                    for(var i = 0; i < 2; i++){
-                        _i = i + 1
-                        page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
-                    }
-                    page_html_slice += '<li class="page-item disabled"><span class="page-link" >' + '...' + '</span></li>'
-                    for(var i = 3; i > 0; i--){
-                        _i = to_page_num + 2 - i
-                        page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
-                    }
-                    page_html_slice += '<li class="page-item disabled"><span class="page-link" >' + '...' + '</span></li>'
-                    for(var i = 2; i > 0; i--){
-                        _i = max_page_num + 1 - i
-                        page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
-                    }
-                }else if (to_page_num <= 6){
-                    for(var i = 0; i < 7; i++){
-                        _i = i + 1
-                        page_html_slice += '<li class="page-item" cc="'+ _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
-                    }
-                    page_html_slice += '<li class="page-item disabled"><span class="page-link">' + '...' + '</span></li>'
-                    for(var i = 2; i > 0; i--){
-                        _i = max_page_num + 1 - i
-                        page_html_slice += '<li class="page-item" cc="'+ _i +'"><a class="page-link" href="#">' + _i + '</a></li>'
-                    }
-                }else if(to_page_num >= max_page_num - 6){
-                    for(var i = 0; i < 2; i++){
-                        _i = i + 1
-                        page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
-                    }
-                    page_html_slice += '<li class="page-item disabled"><span class="page-link">' + '...' + '</span></li>'
-                    for(var i = 8; i > 0; i--){
-                        _i = max_page_num - i + 1
-                        page_html_slice += '<li class="page-item" cc="' + _i + '"><a class="page-link" href="#">' + _i + '</a></li>'
-                    } 
-                }
-                
-            }
-            var page_html = [
-                '<nav>',
-                '<ul class="pagination" id="page_ul">',
-                '<li id="previous_page_btn" cc="-" class="page-item' + (is_previous_abled ? '' : ' disabled ') + '">',
-                '<a class="page-link" href="#">',
-                '<span>Previous</span>',
-                '<span  class="sr-only">Previous</span>',
-                '</a>',
-                '</li>',
-                page_html_slice,
-                '<li id="next_page_btn" cc="+" class="page-item' + (is_next_abled ? '' : ' disabled ') + '">',
-                '<a class="page-link" href="#">',
-                '<span>Next</span>',
-                '<span class="sr-only">Next</span>',
-                '</a>',
-                '</li>',
-                '<li><input id="page_input" style="height:38px;width:48px;margin-left:24px;margin-right:6px;"></li>',
-                '<li><button id="page_jump_btn" class="btn btn-secondary">Jump</button></li>',
-                '<div style="display:none;">',
-                '<aa id="current_page_num_e">'+ to_page_num + '</aa>', 
-                '<aa id="max_page_num_e">' + max_page_num + '</aa>',
-                '</div>',
-                '</ul>',
-                '<nav>'
-            ].join('\n')
-            page_div.html(page_html)
-            $('.page-item[cc="' + to_page_num + '"]').addClass('active')
-            $('.page-item').each(function(i, el){
-                $(el).on('click', function(){
-                    cc = $(el).attr('cc')
+                var page_html = [
+                    '<nav>',
+                    '<ul class="pagination" id="page_ul">',
+                    '<li id="previous_page_btn" cc="-" class="page-item' + (is_previous_abled ? '' : ' disabled ') + '">',
+                    '<a class="page-link" href="#">',
+                    '<span>Previous</span>',
+                    '<span  class="sr-only">Previous</span>',
+                    '</a>',
+                    '</li>',
+                    page_html_slice,
+                    '<li id="next_page_btn" cc="+" class="page-item' + (is_next_abled ? '' : ' disabled ') + '">',
+                    '<a class="page-link" href="#">',
+                    '<span>Next</span>',
+                    '<span class="sr-only">Next</span>',
+                    '</a>',
+                    '</li>',
+                    '<li><input id="page_input" style="height:38px;width:48px;margin-left:24px;margin-right:6px;"></li>',
+                    '<li><button id="page_jump_btn" class="btn btn-secondary">Jump</button></li>',
+                    '<div style="display:none;">',
+                    '<aa id="current_page_num_e">'+ to_page_num + '</aa>', 
+                    '<aa id="max_page_num_e">' + max_page_num + '</aa>',
+                    '</div>',
+                    '</ul>',
+                    '<nav>'
+                ].join('\n')
+                page_div.html(page_html)
+                $('.page-item[cc="' + to_page_num + '"]').addClass('active')
+                $('.page-item').each(function(i, el){
+                    $(el).on('click', function(){
+                        cc = $(el).attr('cc')
+                        current_page_num = parseInt($('#current_page_num_e').html())
+                        max_page_num = parseInt($('#max_page_num_e').html())
+                        if(cc == '-'){
+                            cc = current_page_num - 1
+                        }
+                        if(cc == '+'){
+                            cc = current_page_num + 1
+                        }
+                        page_change(page_div_id, handler, current_page_num, cc, max_page_num)
+                    })
+                })
+                jump_btn = $('#page_jump_btn')
+                page_input = $('#page_input')
+                jump_btn.on('click', function(){
                     current_page_num = parseInt($('#current_page_num_e').html())
                     max_page_num = parseInt($('#max_page_num_e').html())
-                    if(cc == '-'){
-                        cc = current_page_num - 1
-                    }
-                    if(cc == '+'){
-                        cc = current_page_num + 1
-                    }
-                    page_change(page_div_id, url, handler, current_page_num, cc, max_page_num)
+                    to_page_num = page_input.val()
+                    page_change(page_div_id, handler, current_page_num, to_page_num, max_page_num)
                 })
-            })
-            jump_btn = $('#page_jump_btn')
-            page_input = $('#page_input')
-            jump_btn.on('click', function(){
-                current_page_num = parseInt($('#current_page_num_e').html())
-                max_page_num = parseInt($('#max_page_num_e').html())
-                to_page_num = page_input.val()
-                page_change(page_div_id, url, handler, current_page_num, to_page_num, max_page_num)
-            })
-            history.pushState('nothing', 'reclannad', window.location.href.split('?')[0] + '?page=' + to_page_num)
-            window.scrollTo(0, 0)
-            if(is_first_call){
-                is_first_call = false
-                return
-            }
-            $.ajax({
-                url: url,
-                type: 'post',
-                dataType: 'json',
-                data: {
-                    page: to_page_num
-                },
-                success: function(data){
-                    handler(data)
-                },
-                error: function(e){
-                    console.log(e)
+                history.pushState('nothing', 'reclannad', window.location.href.split('?')[0] + '?page=' + to_page_num)
+                window.scrollTo(0, 0)
+                if(this.is_first_call){
+                    this.is_first_call = false
+                    return
                 }
-            })
+                handler(to_page_num)
+            }
         }
-        function update_articles_async(articles){
-            articles_el = $('#articles_div')
-            articles_html = ""
-            articles.forEach(element => {
-                articles_html += '<div class="card article">\
-                                  <div class="card-body">\
-                                  <h4 class="card-title">' + element.title + '</h4>\
-                                  <p class="card-text">' + element.brief + ' .....</p>\
-                                  <a href="/article/' + element.aid + '/get" >Read More</a>\
-                                  </div>\
-                                  </div>'
-            })
-            articles_el.html(articles_html)
+        function update_articles_async(to_page_num){
+            $.ajax({
+                    url: '/article/list/',
+                    type: 'post',
+                    dataType: 'json',
+                    data: {
+                        page: to_page_num
+                    },
+                    success: function(data){
+                        articles_el = $('#articles_div')
+                        articles_html = ""
+                        data.forEach(element => {
+                            articles_html += '<div class="card article">\
+                                            <div class="card-body">\
+                                            <a href="/article/' + element.aid + '/get"><h4 class="card-title">' + element.title + '</h4></a>\
+                                            <p class="card-text">' + element.brief + ' .....</p>\
+                                            <a href="/article/' + element.aid + '/get" >Read More</a>\
+                                            </div>\
+                                            </div>'
+                        })
+                        articles_el.html(articles_html)
+                    },
+                    error: function(e){
+                        console.log(e)
+                    }
+                })
         }
         function done_async_tasks(){
             most_read = $('#most_read_area')
@@ -269,10 +271,11 @@
         }
 
         window.onload = function(){
-           page = $('#init_page').html()
-           page_size = $('#init_page_size').html()
-           max_page = $('#init_max_page').html()
-           page_change('page_area', '/article/list/', update_articles_async, page, page, max_page); 
+           var page = $('#init_page').html()
+           var page_size = $('#init_page_size').html()
+           var max_page = $('#init_max_page').html()
+           var p = new Page()
+           p.page_change('page_area', update_articles_async, page, page, max_page); 
            done_async_tasks()
         }
     </script>

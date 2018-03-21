@@ -49,6 +49,36 @@
             </div>
         </div>
     </div>
+    <div class="container" id="comment_div">
+        <div class="row">
+            <div class="col-md-12">
+                Avatar: 
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-outline-secondary active">
+                        <input type="radio" name="options" id="option1" autocomplete="off" checked>
+                        random
+                    </label>
+                    <label class="btn btn-outline-secondary" data-toggle="collapse" href="#avatar_area">
+                        <input type="radio" name="options" id="option1" autocomplete="off">
+                        Select
+                    </label>
+                </div>
+                <div id="avatar_area" class="collapse in">
+                    <img src="/static/images/main/0.jpg"><img src="/static/images/main/1.jpg"><img src="/static/images/main/2.jpg">
+                    <img src="/static/images/main/3.jpg"><img src="/static/images/main/4.jpg"><img src="/static/images/main/5.jpg">
+                    <img src="/static/images/main/6.jpg">
+                </div>
+
+            </div>
+            <div class="col-md-12">
+                Enter name/email:<input>
+            </div>
+            <div class="col-md-12">
+                Comment: <br>
+                <textarea style="margin-left:10px;width:80%;height:60%;"></textarea>
+            </div>
+        </div>
+    </div>
     <div style="display:none;">
         <input id="article_id" value="{{ article.id }}">
     </div>
@@ -110,6 +140,18 @@
         text-align: left;
         border-top: 1px black solid;
         padding-top: 24px;
+    }
+    #comment_div{
+        background-color: #eeeeee;
+        height: 300px;
+        border-radius: 6px;
+        margin-top: 48px;
+    }
+    #comment_div img{
+        width: 96px;
+        height: 96px;
+        margin-left: 12px;
+        margin-right: 12px;
     }
     </style>
 {% endblock %}

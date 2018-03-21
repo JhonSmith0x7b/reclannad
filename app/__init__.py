@@ -16,6 +16,8 @@ from .tiebasearch import tiebasearch
 app.register_blueprint(tiebasearch)
 from .catch_vungle import catch_vungle
 app.register_blueprint(catch_vungle)
+from .drrr import drrr
+app.register_blueprint(drrr)
 init_db(app)
-app.debug = True 
+app.debug = config['development'].DEBUG
 app.secret_key = config['development'].APP_SECRET
